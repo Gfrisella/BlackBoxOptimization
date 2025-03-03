@@ -6,9 +6,9 @@
 # ssh linux.physik.uzh.ch 'echo "no" >> dontwork'
 
 export PROJECTS_DIR=~/Project
-export STORE_DIR=/disk/users/gfrise
+export STORE_DIR=~
 export PYTHONNOUSERSITE=1
-
+export APPTAINER_DIR=~/Project/container/
 
 # Check if the required directories exist
 if [ ! -d "$PROJECTS_DIR" ]; then
@@ -42,12 +42,8 @@ else
     echo "No 'merged_data.pkl' files found to remove."
 fi
 # Run the container with bind-mounts
-srun bash "/home/hep/gfrise/Project/containers/install-dir/bin/apptainer" exec \
-    -B /cvmfs \
-    -B "$STORE_DIR" \
-    -B "/home/hep/gfrise/Project:/mnt" \
-    "/disk/users/lprate/containers/fem_geant.sif" \
-    bash /mnt/BlackBoxOptimization/run_worker.sh
+srun -A uzh42 -C mc bash apptainer exec -B ~ -B "APPTAINER_DIR"-B "$STORE_DIR"   "~/Project/container/snoopy_geant.sif" / 
+bash ~/Project/BlackBoxOptimization/run_worker.sh
 
 # bash "$STORE_DIR/Project/container/install-dir/bin/apptainer" exec \
 #     -B /cvmfs \

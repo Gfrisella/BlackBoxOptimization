@@ -117,7 +117,7 @@ class ShipMuonShield():
             all_results = [[np.nan]*8]
         all_results = torch.as_tensor(np.concatenate(all_results, axis=0).T,device = phi.device,dtype=torch.get_default_dtype())
         all_results[3],all_results[4],all_results[5] = self.propagate_to_sensitive_plane(*all_results[:6])
-        return *all_results, torch.as_tensor(weight,device = phi.device)
+        return (*all_results, torch.as_tensor(weight,device = phi.device))
 
     def muon_loss(self,x,y,particle, weight = None):
         charge = -1*torch.sign(particle)
