@@ -1197,6 +1197,7 @@ class BayesianOptimizer(OptimizerClass):
         self._iter_reduce_bounds = reduce_bounds
         self.multi_fidelity = multi_fidelity
         self.trust_radius = 1.0
+        self.bounds = self.bounds.cpu()
         if resume: 
             for i in model_scheduler:
                 if self._i > i and i>0:
