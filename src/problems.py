@@ -788,6 +788,15 @@ class ShipMuonShield():
             make_index(6, [1,2,3,4,9,14])
         ),
         # 24 parameters
+        "stellatryon_rect_soft": (
+            make_index(1, [1,2,4,9]) +
+            make_index(2, [1,2,4,9]) +
+            make_index(3, [1,2,4,9]) +
+            make_index(4, [1,4,9]) +
+            make_index(5, [6,7,9] + [14]) +
+            make_index(6, [1,2,4,9,14])
+        ),
+        # 24 parameters
         "stellatryon_soft_old": (
             make_index(1, [1,2,3,9]) +
             make_index(2, [1,2,3,9]) +
@@ -1301,6 +1310,11 @@ class ShipMuonShield():
                         values_9
                     )   
                 elif self.key and self.key.startswith("stell"):
+                    #∆Xcore,2 = ∆Xcore,1
+                    new_phi = new_phi.index_put(
+                                                (rows, torch.tensor([3])),
+                                                new_phi[rows, 2]
+                                            )
                     # X_yoke 1 = X_yoke2 => ∆Xcore,1 · (1 + Ryoke/core,1) = ∆Xcore,2 · (1 + Ryoke/core,2) => ∆Xcore,2 = ∆Xcore,1 · (1 + Ryoke/core,1)/ (1 + Ryoke/core,2)
                     values_8 = (new_phi[rows, 3] * (1 + new_phi[rows, 9]) + new_phi[rows, 7] - new_phi[rows, 6] - new_phi[rows, 2])/(new_phi[rows, 2])
                     #Ensure that the yoke is never less than 1
